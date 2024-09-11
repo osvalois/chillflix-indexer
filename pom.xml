@@ -19,7 +19,11 @@
 		<bucket4j.version>8.3.0</bucket4j.version>
 	</properties>
 	<dependencies>
-		<!-- Spring Boot Starters -->
+		<plugin>
+			<groupId>org.springframework.boot.experimental</groupId>
+			<artifactId>spring-boot-thin-layout</artifactId>
+			<version>1.0.28.RELEASE</version>
+		</plugin>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-webflux</artifactId>
@@ -164,6 +168,15 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+				</configuration>
+			</plugin>
+			 <plugin>
+           		 <groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<layers>
+						<enabled>true</enabled>
+					</layers>
 				</configuration>
 			</plugin>
 			<plugin>
