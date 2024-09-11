@@ -1,23 +1,20 @@
-# Use the official OpenJDK image as a parent image
-FROM openjdk:17-slim as build
+# Use the official Maven image as a parent image
+FROM maven:3.8.4-openjdk-17-slim as build
 
 # Set the working directory in the container
 WORKDIR /workspace/app
 
-# Copy the Maven wrapper and pom.xml file
-COPY mvnw .
-COPY .mvn .mvn
+# Copy the pom.xml file
 COPY pom.xml .
 
 # Download all required dependencies into one layer
-RUN ./mvnw dependency:go-offline -B
+RUN mvn dependency:go-offline -B
 
-# Copy the project source
-COPY src src
+# Copy the project files
+COPY src ./src
 
 # Build the application
-RUN ./mvnw package -DskipTests
-RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
+RUN mvn package -DskipTests
 
 # Start with a base image containing Java runtime
 FROM openjdk:17-slim
@@ -28,11 +25,8 @@ VOLUME /tmp
 # Make port 8080 available to the world outside this container
 EXPOSE 8080
 
-# Set application's JAR file
-ARG JAR_FILE=target/*.jar
-
-# Add the application's jar to the container
-COPY ${JAR_FILE} app.jar
+# Copy the jar file from the build stage
+COPY --from=build /workspace/app/target/*.jar app.jar
 
 # Run the jar file
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
