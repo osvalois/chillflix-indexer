@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-IndexerApplication<indexer>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.chillflix.indexer.IndexerApplication",
+            "projectName": "indexer",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
