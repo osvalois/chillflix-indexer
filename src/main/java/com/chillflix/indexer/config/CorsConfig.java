@@ -12,8 +12,8 @@ public class CorsConfig implements WebFluxConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-            .allowedOrigins("https://chillflix.fly.dev")
-            .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+            .allowedOrigins("https://chillflix.fly.dev", "http://localhost:5173")
+            .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
             .allowedHeaders("Authorization", "Content-Type", "X-Requested-With", "Accept")
             .exposedHeaders("Content-Disposition")
             .allowCredentials(true)
