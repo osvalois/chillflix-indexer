@@ -1,7 +1,8 @@
 package com.chillflix.indexer.mapper;
 
-import com.chillflix.indexer.models.Movie;
 import com.chillflix.indexer.dto.MovieDTO;
+import com.chillflix.indexer.entities.Movie;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;

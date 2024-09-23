@@ -1,10 +1,10 @@
 package com.chillflix.indexer.service;
 
 import com.chillflix.indexer.dto.MovieDTO;
+import com.chillflix.indexer.entities.Movie;
 import com.chillflix.indexer.exception.MovieNotFoundException;
 import com.chillflix.indexer.exception.ValidationException;
 import com.chillflix.indexer.mapper.MovieMapper;
-import com.chillflix.indexer.models.Movie;
 import com.chillflix.indexer.repository.MovieRepository;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;

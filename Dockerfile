@@ -7,30 +7,36 @@ WORKDIR /workspace/app
 # Copy the pom.xml file
 COPY pom.xml .
 
-# Download all required dependencies into one layer
-RUN mvn dependency:go-offline -B
-
 # Copy the project files
 COPY src ./src
 
-# Build the application
-RUN mvn package -DskipTests
+# Build the application and skip tests
+RUN mvn clean package -DskipTests
 
-# Start with a base image containing Java runtime (usando una imagen más ligera)
+# Use a smaller base image for the runtime
 FROM eclipse-temurin:17-jre-alpine
 
-# Add a volume pointing to /tmp
-VOLUME /tmp
+# Add a non-root user
+RUN addgroup -S spring && adduser -S spring -G spring
 
-# Make port 8080 available to the world outside this container
-EXPOSE 8080
+# Set the working directory
+WORKDIR /app
 
 # Copy the jar file from the build stage
 COPY --from=build /workspace/app/target/*.jar app.jar
 
-# Run the jar file with optimizations
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-XX:+UseContainerSupport","-XX:MaxRAMPercentage=75.0","-jar","/app.jar"]
+# Change ownership of the app directory
+RUN chown -R spring:spring /app
+
+# Use the non-root user
+USER spring
+
+# Expose the application port
+EXPOSE 8080
 
 # Set environment variables
 ENV SPRING_PROFILES_ACTIVE=prod
-ENV JAVA_TOOL_OPTIONS="-Dspring.main.lazy-initialization=true -Dspring.jpa.open-in-view=false -Dspring.data.jpa.repositories.bootstrap-mode=lazy"
+ENV JAVA_TOOL_OPTIONS="-Dspring.main.lazy-initialization=true -Dspring.jpa.open-in-view=false -Dspring.data.jpa.repositories.bootstrap-mode=lazy -XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0 -Djava.security.egd=file:/dev/./urandom"
+
+# Run the jar file
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]

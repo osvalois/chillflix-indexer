@@ -4,6 +4,7 @@ import com.chillflix.indexer.dto.MovieDTO;
 import com.chillflix.indexer.service.MovieService;
 import com.chillflix.indexer.exception.MovieNotFoundException;
 import com.chillflix.indexer.exception.ValidationException;
+import com.chillflix.indexer.models.TmdbSearchRequest;
 import com.chillflix.indexer.repository.MovieRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -162,6 +163,23 @@ public class MovieController {
                 .onErrorResume(MovieNotFoundException.class, e -> Mono.just(ResponseEntity.notFound().build()))
                 .onErrorResume(e -> {
                     log.error("Error deleting movie", e);
+                    return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
+                });
+    }
+    @GetMapping("/tmdb")
+    @Operation(summary = "Find movie by TMDB ID and language", description = "Retrieve movie information based on TMDB ID and language")
+    @ApiResponse(responseCode = "200", description = "Movie found", content = @Content(schema = @Schema(implementation = MovieDTO.class)))
+    @ApiResponse(responseCode = "404", description = "Movie not found")
+    public Mono<ResponseEntity<MovieDTO>> findMovieByTmdbIdAndLanguage(
+            @RequestParam("tmdbId") Integer tmdbId,
+            @RequestParam("language") String language) {
+        return movieService.getMoviesByTmdbId(tmdbId)
+                .filter(movie -> movie.language().equalsIgnoreCase(language))
+                .next()
+                .map(ResponseEntity::ok)
+                .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()))
+                .onErrorResume(e -> {
+                    log.error("Error finding movie by TMDB ID and language", e);
                     return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
                 });
     }
