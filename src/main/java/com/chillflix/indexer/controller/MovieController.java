@@ -124,7 +124,7 @@ public class MovieController {
                 .onErrorResume(ValidationException.class,
                         e -> Mono.just(ResponseEntity.badRequest()
                                 .body(new MovieDTO(null, e.getMessage(), null, null, null, null, null, null, null, null,
-                                        null))))
+                                        null, null, null, null, null, null, null, null, null, null, null, null))))
                 .onErrorResume(e -> {
                     log.error("Error creating movie", e);
                     return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
@@ -145,7 +145,7 @@ public class MovieController {
                 .onErrorResume(ValidationException.class,
                         e -> Mono.just(ResponseEntity.badRequest()
                                 .body(new MovieDTO(id, e.getMessage(), null, null, null, null, null, null, null, null,
-                                        null))))
+                                        null, null, null, null, null, null, null, null, null, null, null, null))))
                 .onErrorResume(e -> {
                     log.error("Error updating movie", e);
                     return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
@@ -299,7 +299,7 @@ public class MovieController {
                 .onErrorResume(ValidationException.class,
                         e -> Mono.just(ResponseEntity.badRequest()
                                 .body(new MovieDTO(null, e.getMessage(), null, null, null, null, null, null, null, null,
-                                        null))))
+                                        null, null, null, null, null, null, null, null, null, null, null, null))))
                 .onErrorResume(e -> {
                     log.error("Error creating or updating movie", e);
                     return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());

@@ -9,7 +9,6 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 import java.util.UUID;
 import java.util.List;
 
@@ -70,9 +69,9 @@ public class Movie {
     @LastModifiedDate
     @Column("updated_at")
     private LocalDateTime updatedAt;
-    // New fields based on the updated schema
+
     @Column("search_vector")
-    private Object searchVector; // Using Object as a placeholder for tsvector
+    private Object searchVector;
 
     @Column("size")
     private Long size;

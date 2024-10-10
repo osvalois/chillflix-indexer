@@ -1,6 +1,8 @@
 package com.chillflix.indexer.dto;
 
 import jakarta.validation.constraints.*;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 public record MovieDTO(
@@ -38,5 +40,34 @@ public record MovieDTO(
     String fileType,
 
     @Pattern(regexp = "^[a-fA-F0-9]{64}$", message = "Invalid SHA256 hash")
-    String sha256Hash
+    String sha256Hash,
+
+    Boolean isDeleted,
+
+    LocalDateTime createdAt,
+
+    LocalDateTime updatedAt,
+
+    @Size(max = 1000, message = "Overview must be 1000 characters or less")
+    String overview,
+
+    @Size(max = 255, message = "Poster path must be 255 characters or less")
+    String posterPath,
+
+    List<@Size(max = 50, message = "Each genre must be 50 characters or less") String> genres,
+
+    @Size(max = 255, message = "Torrent URL must be 255 characters or less")
+    String torrentUrl,
+
+    @Size(max = 255, message = "Trailer URL must be 255 characters or less")
+    String trailerUrl,
+
+    @PositiveOrZero(message = "Size must be a positive number or zero")
+    Long size,
+
+    @PositiveOrZero(message = "Seeds must be a positive number or zero")
+    Integer seeds,
+
+    @PositiveOrZero(message = "Peers must be a positive number or zero")
+    Integer peers
 ) {}
