@@ -47,7 +47,7 @@ class MovieControllerTest {
 
     @Test
     void searchMovies_Success() {
-        MovieDTO movie = new MovieDTO(UUID.randomUUID(), "Test Movie", 2021, "magnet:?xt=urn:btih:123", 1, "tt1234567", "English", "English", "HD", "MP4", "abc123");
+        MovieDTO movie = new MovieDTO(UUID.randomUUID(), "Test Movie", 2021, "magnet:?xt=urn:btih:123", 1, "tt1234567", "English", "English", "HD", "MP4", "abc123", null, null, null, null, null, null, null, null, null, null, null);
         when(movieService.searchMovies(anyString(), any(PageRequest.class))).thenReturn(Flux.just(movie));
 
         webTestClient.get().uri("/v1/movies/search?term=Test&page=0&size=10&sort=title,asc")
@@ -61,7 +61,7 @@ class MovieControllerTest {
     @Test
     void getMovieById_Success() {
         UUID id = UUID.randomUUID();
-        MovieDTO movie = new MovieDTO(id, "Test Movie", 2021, "magnet:?xt=urn:btih:123", 1, "tt1234567", "English", "English", "HD", "MP4", "abc123");
+        MovieDTO movie = new MovieDTO(id, "Test Movie", 2021, "magnet:?xt=urn:btih:123", 1, "tt1234567", "English", "English", "HD", "MP4", "abc123", null, null, null, null, null, null, null, null, null, null, null);
         when(movieService.getMovieById(id)).thenReturn(Mono.just(movie));
 
         webTestClient.get().uri("/v1/movies/" + id)
@@ -83,8 +83,8 @@ class MovieControllerTest {
 
     @Test
     void createMovie_Success() {
-        MovieDTO movieDTO = new MovieDTO(null, "New Movie", 2021, "magnet:?xt=urn:btih:123", 1, "tt1234567", "English", "English", "HD", "MP4", "abc123");
-        MovieDTO savedMovie = new MovieDTO(UUID.randomUUID(), "New Movie", 2021, "magnet:?xt=urn:btih:123", 1, "tt1234567", "English", "English", "HD", "MP4", "abc123");
+        MovieDTO movieDTO = new MovieDTO(null, "New Movie", 2021, "magnet:?xt=urn:btih:123", 1, "tt1234567", "English", "English", "HD", "MP4", "abc123", null, null, null, null, null, null, null, null, null, null, null);
+        MovieDTO savedMovie = new MovieDTO(UUID.randomUUID(), "New Movie", 2021, "magnet:?xt=urn:btih:123", 1, "tt1234567", "English", "English", "HD", "MP4", "abc123", null, null, null, null, null, null, null, null, null, null, null);
         when(movieService.saveMovie(any())).thenReturn(Mono.just(savedMovie));
 
         webTestClient.post().uri("/v1/movies")
@@ -98,7 +98,7 @@ class MovieControllerTest {
     @Test
     void updateMovie_Success() {
         UUID id = UUID.randomUUID();
-        MovieDTO movieDTO = new MovieDTO(id, "Updated Movie", 2021, "magnet:?xt=urn:btih:123", 1, "tt1234567", "English", "English", "HD", "MP4", "abc123");
+        MovieDTO movieDTO = new MovieDTO(id, "Updated Movie", 2021, "magnet:?xt=urn:btih:123", 1, "tt1234567", "English", "English", "HD", "MP4", "abc123", null, null, null, null, null, null, null, null, null, null, null);
         when(movieService.updateMovie(eq(id), any())).thenReturn(Mono.just(movieDTO));
 
         webTestClient.put().uri("/v1/movies/" + id)
@@ -121,8 +121,8 @@ class MovieControllerTest {
 
     @Test
     void getAllMovies_Success() {
-        MovieDTO movie1 = new MovieDTO(UUID.randomUUID(), "Movie 1", 2021, "magnet:?xt=urn:btih:123", 1, "tt1234567", "English", "English", "HD", "MP4", "abc123");
-        MovieDTO movie2 = new MovieDTO(UUID.randomUUID(), "Movie 2", 2022, "magnet:?xt=urn:btih:456", 2, "tt7654321", "Spanish", "Spanish", "4K", "MKV", "def456");
+        MovieDTO movie1 = new MovieDTO(UUID.randomUUID(), "Movie 1", 2021, "magnet:?xt=urn:btih:123", 1, "tt1234567", "English", "English", "HD", "MP4", "abc123", null, null, null, null, null, null, null, null, null, null, null);
+        MovieDTO movie2 = new MovieDTO(UUID.randomUUID(), "Movie 2", 2022, "magnet:?xt=urn:btih:456", 2, "tt7654321", "Spanish", "Spanish", "4K", "MKV", "def456", null, null, null, null, null, null, null, null, null, null, null);
         when(movieService.getAllMovies(any(PageRequest.class))).thenReturn(Flux.just(movie1, movie2));
 
         webTestClient.get().uri("/v1/movies?page=0&size=10&sort=title,asc")
@@ -146,7 +146,7 @@ class MovieControllerTest {
 
     @Test
     void getMoviesByYear_Success() {
-        MovieDTO movie = new MovieDTO(UUID.randomUUID(), "Test Movie", 2021, "magnet:?xt=urn:btih:123", 1, "tt1234567", "English", "English", "HD", "MP4", "abc123");
+        MovieDTO movie = new MovieDTO(UUID.randomUUID(), "Test Movie", 2021, "magnet:?xt=urn:btih:123", 1, "tt1234567", "English", "English", "HD", "MP4", "abc123", null, null, null, null, null, null, null, null, null, null, null);
         when(movieService.getMoviesByYear(eq(2021), any(PageRequest.class))).thenReturn(Flux.just(movie));
 
         webTestClient.get().uri("/v1/movies/year/2021?page=0&size=10")
@@ -159,7 +159,7 @@ class MovieControllerTest {
 
     @Test
     void getMoviesByLanguage_Success() {
-        MovieDTO movie = new MovieDTO(UUID.randomUUID(), "Test Movie", 2021, "magnet:?xt=urn:btih:123", 1, "tt1234567", "English", "English", "HD", "MP4", "abc123");
+        MovieDTO movie = new MovieDTO(UUID.randomUUID(), "Test Movie", 2021, "magnet:?xt=urn:btih:123", 1, "tt1234567", "English", "English", "HD", "MP4", "abc123", null, null, null, null, null, null, null, null, null, null, null);
         when(movieService.getMoviesByLanguage(eq("English"), any(PageRequest.class))).thenReturn(Flux.just(movie));
 
         webTestClient.get().uri("/v1/movies/language/English?page=0&size=10")
@@ -183,8 +183,8 @@ class MovieControllerTest {
 
     @Test
     void bulkUpdateMovies_Success() {
-        MovieDTO movie1 = new MovieDTO(UUID.randomUUID(), "Movie 1", 2021, "magnet:?xt=urn:btih:123", 1, "tt1234567", "English", "English", "HD", "MP4", "abc123");
-        MovieDTO movie2 = new MovieDTO(UUID.randomUUID(), "Movie 2", 2022, "magnet:?xt=urn:btih:456", 2, "tt7654321", "Spanish", "Spanish", "4K", "MKV", "def456");
+        MovieDTO movie1 = new MovieDTO(UUID.randomUUID(), "Movie 1", 2021, "magnet:?xt=urn:btih:123", 1, "tt1234567", "English", "English", "HD", "MP4", "abc123", null, null, null, null, null, null, null, null, null, null, null);
+        MovieDTO movie2 = new MovieDTO(UUID.randomUUID(), "Movie 2", 2022, "magnet:?xt=urn:btih:456", 2, "tt7654321", "Spanish", "Spanish", "4K", "MKV", "def456", null, null, null, null, null, null, null, null, null, null, null);
         List<MovieDTO> movies = Arrays.asList(movie1, movie2);
         when(movieService.bulkUpdateMovies(movies)).thenReturn(Flux.fromIterable(movies));
 
@@ -199,7 +199,7 @@ class MovieControllerTest {
 
     @Test
     void advancedSearch_Success() {
-        MovieDTO movie = new MovieDTO(UUID.randomUUID(), "Test Movie", 2021, "magnet:?xt=urn:btih:123", 1, "tt1234567", "English", "English", "HD", "MP4", "abc123");
+        MovieDTO movie = new MovieDTO(UUID.randomUUID(), "Test Movie", 2021, "magnet:?xt=urn:btih:123", 1, "tt1234567", "English", "English", "HD", "MP4", "abc123", null, null, null, null, null, null, null, null, null, null, null);
         when(movieService.advancedSearch(anyString(), anyInt(), anyString(), anyString(), anyString(), any(PageRequest.class)))
                 .thenReturn(Flux.just(movie));
 
@@ -268,7 +268,7 @@ class MovieControllerTest {
 
     @Test
     void createOrUpdateMovie_Success() {
-        MovieDTO movieDTO = new MovieDTO(UUID.randomUUID(), "Test Movie", 2021, "magnet:?xt=urn:btih:123", 1, "tt1234567", "English", "English", "HD", "MP4", "abc123");
+        MovieDTO movieDTO = new MovieDTO(UUID.randomUUID(), "Test Movie", 2021, "magnet:?xt=urn:btih:123", 1, "tt1234567", "English", "English", "HD", "MP4", "abc123", null, null, null, null, null, null, null, null, null, null, null);
         when(movieService.createOrUpdateMovie(any())).thenReturn(Mono.just(movieDTO));
 
         webTestClient.post().uri("/v1/movies/create-or-update")
