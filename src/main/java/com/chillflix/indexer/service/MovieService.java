@@ -1,7 +1,6 @@
 package com.chillflix.indexer.service;
 
 import com.chillflix.indexer.dto.MovieDTO;
-import com.chillflix.indexer.entities.Movie;
 import com.chillflix.indexer.exception.MovieNotFoundException;
 import com.chillflix.indexer.exception.ValidationException;
 import com.chillflix.indexer.mapper.MovieMapper;

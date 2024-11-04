@@ -174,6 +174,16 @@
 				</configuration>
 			</plugin>
 			<plugin>
+				<groupId>org.graalvm.buildtools</groupId>
+				<artifactId>native-maven-plugin</artifactId>
+				<configuration>
+					<skipNative>false</skipNative>
+					<buildArgs>
+						<buildArg>--no-fallback</buildArg>
+					</buildArgs>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.10.1</version>
