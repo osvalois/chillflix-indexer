@@ -5,6 +5,8 @@ import com.chillflix.indexer.exception.MovieNotFoundException;
 import com.chillflix.indexer.exception.ValidationException;
 import com.chillflix.indexer.mapper.MovieMapper;
 import com.chillflix.indexer.repository.MovieRepository;
+import com.chillflix.indexer.util.MovieValidationUtil;
+
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +34,7 @@ public class MovieService {
     private final MovieRepository movieRepository;
     private final MovieMapper movieMapper;
     private final Validator validator;
+    private final MovieValidationUtil movieValidationUtil;
 
     @CircuitBreaker(name = "searchMovies", fallbackMethod = "searchMoviesFallback")
     @RateLimiter(name = "searchMovies")
@@ -57,9 +60,10 @@ public class MovieService {
     public Flux<MovieDTO> getMoviesByTmdbId(Integer tmdbId) {
         log.debug("Fetching movies with TMDB id: {}", tmdbId);
         return movieRepository.findByTmdbId(tmdbId)
+                .filter(movie -> movieValidationUtil.isValidSha256Hash(movieValidationUtil.extractHashFromMagnet(movie.getMagnet())))
                 .map(movieMapper::toDto);
     }
-
+    
     public Flux<MovieDTO> getMoviesByImdbId(String imdbId) {
         log.debug("Fetching movies with IMDB id: {}", imdbId);
         return movieRepository.findByImdbId(imdbId)
