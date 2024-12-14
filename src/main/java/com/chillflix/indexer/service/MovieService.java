@@ -60,7 +60,7 @@ public class MovieService {
     public Flux<MovieDTO> getMoviesByTmdbId(Integer tmdbId) {
         log.debug("Fetching movies with TMDB id: {}", tmdbId);
         return movieRepository.findByTmdbId(tmdbId)
-                .filter(movie -> movieValidationUtil.isValidSha256Hash(movieValidationUtil.extractHashFromMagnet(movie.getMagnet())))
+                //.filter(movie -> movieValidationUtil.isValidSha256Hash(movieValidationUtil.extractHashFromMagnet(movie.getMagnet())))
                 .map(movieMapper::toDto);
     }
     
