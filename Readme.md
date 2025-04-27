@@ -2,8 +2,11 @@
 
 ![ChillFlix Logo](https://via.placeholder.com/150x150.png?text=ChillFlix+Logo)
 
-[![Build Status](https://img.shields.io/travis/chillflix/indexer/main.svg?style=flat-square)](https://travis-ci.org/chillflix/indexer)
-[![Coverage Status](https://img.shields.io/codecov/c/github/chillflix/indexer/main.svg?style=flat-square)](https://codecov.io/gh/chillflix/indexer)
+[![Build Status](https://github.com/osvalois/chillflix-indexer/actions/workflows/docker-build-push.yml/badge.svg)](https://github.com/osvalois/chillflix-indexer/actions/workflows/docker-build-push.yml)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=osvalois_chillflix-indexer&metric=alert_status)](https://sonarcloud.io/dashboard?id=osvalois_chillflix-indexer)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=osvalois_chillflix-indexer&metric=coverage)](https://sonarcloud.io/dashboard?id=osvalois_chillflix-indexer)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=osvalois_chillflix-indexer&metric=security_rating)](https://sonarcloud.io/dashboard?id=osvalois_chillflix-indexer)
+[![Docker Pulls](https://img.shields.io/docker/pulls/osvalois/chillflix-indexer.svg?style=flat-square)](https://hub.docker.com/r/osvalois/chillflix-indexer)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
@@ -69,16 +72,30 @@ Ensure you have the following installed:
    ```
 
 3. Configure the application:
-   Copy `src/main/resources/application.properties.example` to `src/main/resources/application.properties` and update the database credentials.
+   Copy `.env.example` to `.env` and update the environment variables with your database credentials and other settings.
 
-4. Build the project:
+4. Run with Maven:
    ```sh
-   mvn clean install
+   # Build the project
+   make package
+   
+   # Run locally using Maven
+   make run
    ```
 
-5. Run the application:
+5. Run with Docker:
    ```sh
-   java -jar target/chillflix-indexer-1.0.0.jar
+   # Build and run with Docker (uses .env file)
+   make docker
+   
+   # Or build and run separately
+   make docker-build
+   make docker-run
+   ```
+
+6. See available commands:
+   ```sh
+   make help
    ```
 
 ## Usage
@@ -158,8 +175,51 @@ For more information on our testing strategy, see [TESTING.md](docs/TESTING.md).
 
 ## Deployment
 
-ChillFlix Indexer can be deployed in various environments. We provide deployment guides for:
+ChillFlix Indexer can be deployed in various environments:
 
+### Docker Deployment
+
+The application comes with Docker support:
+
+1. Create a `.env` file with your environment variables
+2. Build and run using Docker:
+   ```sh
+   make docker
+   ```
+
+3. Build, scan for security issues, and push to Docker Hub:
+   ```sh
+   # Full DevSecOps cycle (requires Snyk CLI)
+   make docker-devsecops
+   
+   # Or step by step
+   make docker-build
+   make docker-security
+   make docker-login
+   make docker-tag
+   make docker-push
+   ```
+
+4. For deployment on Fly.io:
+   ```sh
+   # Deploy to Fly.io
+   fly deploy
+   ```
+
+### CI/CD with GitHub Actions
+
+We use GitHub Actions for our CI/CD pipeline with strong security controls:
+
+- **Docker Build and Push**: Automatically builds and pushes Docker images to Docker Hub
+- **Security Scanning**: 
+  - Snyk for container vulnerability scanning
+  - GitLeaks for secrets detection
+  - SonarCloud for code quality and security analysis
+  - OWASP Dependency Check for vulnerable dependencies
+- **Automated Testing**: Unit and integration tests run on every push
+- **Automated Deployment**: Continuous deployment to Fly.io
+
+See our detailed deployment guides for other platforms:
 - [Kubernetes](docs/deployment/KUBERNETES.md)
 - [AWS](docs/deployment/AWS.md)
 - [Google Cloud](docs/deployment/GCP.md)
