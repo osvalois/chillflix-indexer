@@ -290,6 +290,18 @@ public class MovieController {
                             "Error fetching movie count by year"));
                 });
     }
+    
+    @GetMapping("/count-by-year/{year}")
+    @Operation(summary = "Get movie count for a specific year", description = "Retrieve the count of movies for a specific year")
+    public Mono<Long> getMovieCountBySpecificYear(
+            @Parameter(description = "Year") @PathVariable int year) {
+        return movieService.countMoviesByYear(year)
+                .onErrorResume(e -> {
+                    log.error("Error counting movies for year: {}", year, e);
+                    return Mono.error(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+                            "Error counting movies for year: " + year));
+                });
+    }
 
     @PostMapping("/create-or-update")
     @Operation(summary = "Create or update a movie", description = "Create a new movie or update an existing one")

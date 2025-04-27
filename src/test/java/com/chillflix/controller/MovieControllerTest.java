@@ -229,8 +229,9 @@ class MovieControllerTest {
         webTestClient.get().uri("/v1/movies/top-languages?limit=10")
                 .exchange()
                 .expectStatus().isOk()
-                .expectBodyList(MovieRepository.LanguageCount.class)
-                .hasSize(1);
+                .expectBody()
+                .jsonPath("$[0].language").isEqualTo("English")
+                .jsonPath("$[0].count").isEqualTo(10);
     }
 
     @Test
@@ -251,8 +252,9 @@ class MovieControllerTest {
         webTestClient.get().uri("/v1/movies/year-count?limit=10")
                 .exchange()
                 .expectStatus().isOk()
-                .expectBodyList(MovieRepository.YearCount.class)
-                .hasSize(1);
+                .expectBody()
+                .jsonPath("$[0].year").isEqualTo(2021)
+                .jsonPath("$[0].count").isEqualTo(10);
     }
 
     @Test
