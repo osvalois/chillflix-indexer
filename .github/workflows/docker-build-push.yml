@@ -45,7 +45,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./mvnw verify sonar:sonar -Dsonar.projectKey=osvalois_chillflix-indexer
+        run: |
+          ./mvnw verify sonar:sonar \
+            -Dsonar.projectKey=osvalois_chillflix-indexer \
+            -Dsonar.organization=osvalois \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.ci.autoscan.disabled=true \
+            -Dsonar.scm.provider=git \
+            -Dsonar.verbose=true
 
       - name: Dependency Vulnerability Scan
         uses: dependency-check/Dependency-Check_Action@main
