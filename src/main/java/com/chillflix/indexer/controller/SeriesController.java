@@ -69,7 +69,7 @@ public class SeriesController {
 
         PageRequest pageRequest = createPageRequest(page, size, sort);
 
-        return seriesService.advancedSearch(title, year, language, quality, fileType, pageRequest)
+        return seriesService.advancedSearch(title, year, language, quality, null, fileType, pageRequest)
                 .onErrorResume(e -> {
                     log.error("Error performing advanced search", e);
                     return Flux.error(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
@@ -123,8 +123,7 @@ public class SeriesController {
                 .map(savedSeries -> ResponseEntity.status(HttpStatus.CREATED).body(savedSeries))
                 .onErrorResume(ValidationException.class,
                         e -> Mono.just(ResponseEntity.badRequest()
-                                .body(new SeriesDTO(null, e.getMessage(), null, null, null, null, null, null, null, null,
-                                        null, null, null, null, null, null, null, null, null, null, null, null))))
+                                .body(new SeriesDTO(null, e.getMessage(), 0))))
                 .onErrorResume(e -> {
                     log.error("Error creating series", e);
                     return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
@@ -144,8 +143,7 @@ public class SeriesController {
                 .onErrorResume(SeriesNotFoundException.class, e -> Mono.just(ResponseEntity.notFound().build()))
                 .onErrorResume(ValidationException.class,
                         e -> Mono.just(ResponseEntity.badRequest()
-                                .body(new SeriesDTO(id, e.getMessage(), null, null, null, null, null, null, null, null,
-                                        null, null, null, null, null, null, null, null, null, null, null, null))))
+                                .body(new SeriesDTO(id, e.getMessage(), 0))))
                 .onErrorResume(e -> {
                     log.error("Error updating series", e);
                     return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
@@ -311,8 +309,7 @@ public class SeriesController {
                 .map(ResponseEntity::ok)
                 .onErrorResume(ValidationException.class,
                         e -> Mono.just(ResponseEntity.badRequest()
-                                .body(new SeriesDTO(null, e.getMessage(), null, null, null, null, null, null, null, null,
-                                        null, null, null, null, null, null, null, null, null, null, null, null))))
+                                .body(new SeriesDTO(null, e.getMessage(), 0))))
                 .onErrorResume(e -> {
                     log.error("Error creating or updating series", e);
                     return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());

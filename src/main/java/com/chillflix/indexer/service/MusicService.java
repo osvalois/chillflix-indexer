@@ -223,8 +223,30 @@ public class MusicService {
         return Flux.empty();
     }
 
-    public Flux<MusicDTO> advancedSearch(String title, String artist, String album, Integer year, String genre, Pageable pageable) {
-        return musicRepository.advancedSearch(title, artist, album, year, genre, pageable.getPageSize(), pageable.getOffset())
+    public Flux<MusicDTO> advancedSearch(String title, Integer year, String language, String quality, String fileType, Pageable pageable) {
+        return musicRepository.advancedSearch(title, null, null, year, null, pageable.getPageSize(), pageable.getOffset())
                 .map(musicMapper::toDto);
+    }
+    
+    public Flux<MusicDTO> getMusicByLanguage(String language, Pageable pageable) {
+        log.debug("Fetching music by language: {}", language);
+        return musicRepository.findAllMusicPaginated(pageable.getPageSize(), pageable.getOffset())
+                // Implementar el filtro basado en los campos disponibles en Music
+                .filter(music -> music.getArtist() != null && music.getArtist().contains(language))
+                .map(musicMapper::toDto);
+    }
+    
+    public Flux<MusicRepository.LanguageCount> getTopLanguages(int limit) {
+        log.debug("Fetching top {} languages", limit);
+        return musicRepository.getTopLanguages(limit)
+                .doOnComplete(() -> log.debug("Fetched top languages"))
+                .doOnError(error -> log.error("Error fetching top languages", error));
+    }
+    
+    public Flux<MusicRepository.YearCount> getMusicCountByYear(int limit) {
+        log.debug("Fetching music count by year, limit: {}", limit);
+        return musicRepository.getMusicCountByYear(limit)
+                .doOnComplete(() -> log.debug("Fetched music count by year"))
+                .doOnError(error -> log.error("Error fetching music count by year", error));
     }
 }

@@ -150,8 +150,7 @@ public class SeriesEpisodeController {
                 .map(savedEpisode -> ResponseEntity.status(HttpStatus.CREATED).body(savedEpisode))
                 .onErrorResume(ValidationException.class,
                         e -> Mono.just(ResponseEntity.badRequest()
-                                .body(new SeriesEpisodeDTO(null, e.getMessage(), null, null, null, null, null, null, null, null,
-                                        null, null, null, null, null, null, null, null))))
+                                .body(new SeriesEpisodeDTO(null, e.getMessage(), 0))))
                 .onErrorResume(e -> {
                     log.error("Error creating episode", e);
                     return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
@@ -171,8 +170,7 @@ public class SeriesEpisodeController {
                 .onErrorResume(EpisodeNotFoundException.class, e -> Mono.just(ResponseEntity.notFound().build()))
                 .onErrorResume(ValidationException.class,
                         e -> Mono.just(ResponseEntity.badRequest()
-                                .body(new SeriesEpisodeDTO(id, e.getMessage(), null, null, null, null, null, null, null, null,
-                                        null, null, null, null, null, null, null, null))))
+                                .body(new SeriesEpisodeDTO(id, e.getMessage(), 0))))
                 .onErrorResume(e -> {
                     log.error("Error updating episode", e);
                     return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
@@ -251,8 +249,7 @@ public class SeriesEpisodeController {
                 .map(ResponseEntity::ok)
                 .onErrorResume(ValidationException.class,
                         e -> Mono.just(ResponseEntity.badRequest()
-                                .body(new SeriesEpisodeDTO(null, e.getMessage(), null, null, null, null, null, null, null, null,
-                                        null, null, null, null, null, null, null, null))))
+                                .body(new SeriesEpisodeDTO(null, e.getMessage(), 0))))
                 .onErrorResume(e -> {
                     log.error("Error creating or updating episode", e);
                     return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());

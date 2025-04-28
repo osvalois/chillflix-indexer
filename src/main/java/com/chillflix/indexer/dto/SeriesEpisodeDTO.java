@@ -47,4 +47,9 @@ public record SeriesEpisodeDTO(
     LocalDateTime createdAt,
 
     LocalDateTime updatedAt
-) {}
+) {
+    // Constructor temporal para mensajes de error
+    public SeriesEpisodeDTO(UUID id, String errorMessage, Integer ignored) {
+        this(id, null, null, null, errorMessage, null, null, null, null, null, null, null, null, null, null);
+    }
+}

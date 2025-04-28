@@ -101,6 +101,9 @@ public interface VideoGameRepository extends R2dbcRepository<VideoGame, UUID> {
     @Query("SELECT unnest(platform) as platform, COUNT(*) as count FROM video_games WHERE (is_deleted = false OR is_deleted IS NULL) GROUP BY platform ORDER BY count DESC LIMIT :limit")
     Flux<PlatformCount> getTopPlatforms(@Param("limit") int limit);
 
+    @Query("SELECT year, COUNT(*) as count FROM video_games WHERE (is_deleted = false OR is_deleted IS NULL) GROUP BY year ORDER BY year DESC LIMIT :limit")
+    Flux<YearCount> getVideoGameCountByYear(@Param("limit") int limit);
+
     @Query("UPDATE video_games SET is_deleted = true WHERE id IN (:ids)")
     Mono<Void> deleteAllByIdIn(@Param("ids") List<UUID> ids);
 
@@ -116,6 +119,11 @@ public interface VideoGameRepository extends R2dbcRepository<VideoGame, UUID> {
 
     interface PlatformCount {
         String getPlatform();
+        Long getCount();
+    }
+
+    interface YearCount {
+        Integer getYear();
         Long getCount();
     }
 }

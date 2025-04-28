@@ -1,5 +1,9 @@
 package com.chillflix.indexer.controller;
 
+import com.chillflix.indexer.dto.MusicTrackDTO;
+import com.chillflix.indexer.exception.MusicTrackNotFoundException;
+import com.chillflix.indexer.exception.ValidationException;
+import com.chillflix.indexer.service.MusicTrackService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -146,8 +150,7 @@ public class MusicTrackController {
                 .map(savedTrack -> ResponseEntity.status(HttpStatus.CREATED).body(savedTrack))
                 .onErrorResume(ValidationException.class,
                         e -> Mono.just(ResponseEntity.badRequest()
-                                .body(new MusicTrackDTO(null, e.getMessage(), null, null, null, null, null, null, null, null,
-                                        null, null, null, null, null, null, null, null))))
+                                .body(new MusicTrackDTO(null, null, null, null, null, null, null, null, null, null, null))))
                 .onErrorResume(e -> {
                     log.error("Error creating music track", e);
                     return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
@@ -167,8 +170,7 @@ public class MusicTrackController {
                 .onErrorResume(MusicTrackNotFoundException.class, e -> Mono.just(ResponseEntity.notFound().build()))
                 .onErrorResume(ValidationException.class,
                         e -> Mono.just(ResponseEntity.badRequest()
-                                .body(new MusicTrackDTO(id, e.getMessage(), null, null, null, null, null, null, null, null,
-                                        null, null, null, null, null, null, null, null))))
+                                .body(new MusicTrackDTO(id, null, null, null, null, null, null, null, null, null, null))))
                 .onErrorResume(e -> {
                     log.error("Error updating music track", e);
                     return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
@@ -279,8 +281,7 @@ public class MusicTrackController {
                 .map(ResponseEntity::ok)
                 .onErrorResume(ValidationException.class,
                         e -> Mono.just(ResponseEntity.badRequest()
-                                .body(new MusicTrackDTO(null, e.getMessage(), null, null, null, null, null, null, null, null,
-                                        null, null, null, null, null, null, null, null))))
+                                .body(new MusicTrackDTO(null, null, null, null, null, null, null, null, null, null, null))))
                 .onErrorResume(e -> {
                     log.error("Error creating or updating music track", e);
                     return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());

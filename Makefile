@@ -31,14 +31,14 @@ DOCKER_HUB_REPO = chillflix-indexer
 
 # General settings
 run:
-	@echo "Starting the application with the following settings:"
-	@echo "R2DBC URL: $(R2DBC_URL)"
-	@echo "R2DBC Username: $(R2DBC_USERNAME)"
-	@echo "Server Port: $(SERVER_PORT)"
-	./mvnw spring-boot:run -Dspring.r2dbc.url=$(R2DBC_URL) \
-                      -Dspring.r2dbc.username=$(R2DBC_USERNAME) \
-                      -Dspring.r2dbc.password=$(R2DBC_PASSWORD) \
-                      -Dserver.port=$(SERVER_PORT)
+	@echo "Iniciando aplicación en MacOS..."
+	@echo "R2DBC URL: ${R2DBC_URL}"
+	@echo "Server Port: ${SERVER_PORT}"
+	./mvnw spring-boot:run \
+		-Dspring.r2dbc.url=${R2DBC_URL} \
+		-Dspring.r2dbc.username=${R2DBC_USERNAME} \
+		-Dspring.r2dbc.password=${R2DBC_PASSWORD} \
+		-Dserver.port=${SERVER_PORT}
 
 # Maven package
 package:

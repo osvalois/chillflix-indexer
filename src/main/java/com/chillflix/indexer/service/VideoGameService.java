@@ -205,7 +205,7 @@ public class VideoGameService {
     }
 
     public Flux<VideoGameDTO> advancedSearch(String title, Integer year, String platform, String developer, String genre, Pageable pageable) {
-        return videoGameRepository.advancedSearch(title, year, platform, developer, genre, pageable.getPageSize(), pageable.getOffset())
+        return videoGameRepository.advancedSearch(title, developer, null, year, platform, genre, pageable.getPageSize(), pageable.getOffset())
                 .map(videoGameMapper::toDto);
     }
 

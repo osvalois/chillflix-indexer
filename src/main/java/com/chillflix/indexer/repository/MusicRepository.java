@@ -92,6 +92,12 @@ public interface MusicRepository extends R2dbcRepository<Music, UUID> {
     @Query("SELECT artist, COUNT(*) as count FROM music WHERE (is_deleted = false OR is_deleted IS NULL) GROUP BY artist ORDER BY count DESC LIMIT :limit")
     Flux<ArtistCount> getTopArtists(@Param("limit") int limit);
 
+    @Query("SELECT year, COUNT(*) as count FROM music WHERE (is_deleted = false OR is_deleted IS NULL) GROUP BY year ORDER BY year DESC LIMIT :limit")
+    Flux<YearCount> getMusicCountByYear(@Param("limit") int limit);
+
+    @Query("SELECT language, COUNT(*) as count FROM music WHERE (is_deleted = false OR is_deleted IS NULL) GROUP BY language ORDER BY count DESC LIMIT :limit")
+    Flux<LanguageCount> getTopLanguages(@Param("limit") int limit);
+
     @Query("UPDATE music SET is_deleted = true WHERE id IN (:ids)")
     Mono<Void> deleteAllByIdIn(@Param("ids") List<UUID> ids);
 
@@ -107,6 +113,16 @@ public interface MusicRepository extends R2dbcRepository<Music, UUID> {
 
     interface ArtistCount {
         String getArtist();
+        Long getCount();
+    }
+
+    interface YearCount {
+        Integer getYear();
+        Long getCount();
+    }
+
+    interface LanguageCount {
+        String getLanguage();
         Long getCount();
     }
 }

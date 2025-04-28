@@ -86,4 +86,9 @@ public record SeriesDTO(
 
     @PositiveOrZero(message = "Episode runtime must be a positive number or zero")
     Integer episodeRuntime
-) {}
+) {
+    // Constructor temporal para mensajes de error
+    public SeriesDTO(UUID id, String errorMessage, Integer ignored) {
+        this(id, errorMessage, ignored, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+    }
+}
