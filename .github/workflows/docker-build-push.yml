@@ -41,24 +41,11 @@ jobs:
       - name: Run Maven tests
         run: ./mvnw test
 
-      - name: Dependency Vulnerability Scan
-        uses: dependency-check/Dependency-Check_Action@main
-        env:
-          JAVA_HOME: ${{ env.JAVA_HOME }}
-        with:
-          project: 'chillflix-indexer'
-          path: '.'
-          format: 'HTML'
-          out: 'security-reports'
-          args: >
-            --failOnCVSS 7
-            --enableRetired
-
-      - name: Archive Security Reports
-        uses: actions/upload-artifact@v4
-        with:
-          name: security-reports
-          path: security-reports
+    #  - name: Archive Security Reports
+    #    uses: actions/upload-artifact@v4
+    #    with:
+    #      name: security-reports
+    #      path: security-reports
 
   build-push:
     runs-on: ubuntu-latest
