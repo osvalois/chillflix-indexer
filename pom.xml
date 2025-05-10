@@ -15,7 +15,7 @@
 	<description>Chillflix movies Indexer</description>
 	<properties>
 		<java.version>17</java.version>
-		<mapstruct.version>1.5.5.Final</mapstruct.version>
+		<mapstruct.version>1.6.3</mapstruct.version>
 		<bucket4j.version>8.10.1</bucket4j.version>
 		<sonar.projectKey>osvalois_chillflix-indexer</sonar.projectKey>
 		<sonar.organization>osvalois</sonar.organization>
